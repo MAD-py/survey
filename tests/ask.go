@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/AlecAivazis/survey/v2/validators"
 )
 
 // the questions to ask
@@ -22,7 +23,7 @@ var simpleQs = []*survey.Question{
 			Options: []string{"red", "blue", "green", "yellow"},
 			Default: "yellow",
 		},
-		Validate: survey.Required,
+		Validate: validators.Required,
 	},
 }
 
@@ -57,7 +58,7 @@ func main() {
 
 	fmt.Println("Asking one with validation.")
 	vAns := ""
-	err = survey.AskOne(&survey.Input{Message: "What is your name?"}, &vAns, survey.WithValidator(survey.Required))
+	err = survey.AskOne(&survey.Input{Message: "What is your name?"}, &vAns, survey.WithValidator(validators.Required))
 	if err != nil {
 		fmt.Println(err.Error())
 		return

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/AlecAivazis/survey/v2/validators"
 )
 
 var simpleQs = []*survey.Question{
@@ -13,7 +14,7 @@ var simpleQs = []*survey.Question{
 			Message: "select1:",
 			Options: []string{"red", "blue", "green"},
 		},
-		Validate: survey.Required,
+		Validate: validators.Required,
 	},
 	{
 		Name: "color2",
@@ -21,7 +22,7 @@ var simpleQs = []*survey.Question{
 			Message: "select2:",
 			Options: []string{"red", "blue", "green"},
 		},
-		Validate: survey.Required,
+		Validate: validators.Required,
 	},
 }
 

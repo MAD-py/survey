@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/AlecAivazis/survey/v2/validators"
 )
 
 // the questions to ask
@@ -258,7 +259,7 @@ var countryQs = []*survey.Question{
 				"Zimbabwe",
 			},
 		},
-		Validate: survey.Required,
+		Validate: validators.Required,
 	},
 }
 

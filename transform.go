@@ -3,6 +3,8 @@ package survey
 import (
 	"reflect"
 	"strings"
+
+	"github.com/AlecAivazis/survey/v2/validators"
 )
 
 // TransformString returns a `Transformer` based on the "f"
@@ -17,7 +19,7 @@ import (
 func TransformString(f func(s string) string) Transformer {
 	return func(ans interface{}) interface{} {
 		// if the answer value passed in is the zero value of the appropriate type
-		if isZero(reflect.ValueOf(ans)) {
+		if validators.IsZero(reflect.ValueOf(ans)) {
 			// skip this `Transformer` by returning a zero value of string.
 			// The original answer will be not affected,
 			// see survey.go#L125.

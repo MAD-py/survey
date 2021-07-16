@@ -1,4 +1,4 @@
-package survey
+package validators
 
 import (
 	"errors"
@@ -8,13 +8,18 @@ import (
 	"github.com/AlecAivazis/survey/v2/core"
 )
 
+// Validator is a function passed to a Question after a user has provided a response.
+// If the function returns an error, then the user will be prompted again for another
+// response.
+type Validator func(ans interface{}) error
+
 // Required does not allow an empty value
 func Required(val interface{}) error {
 	// the reflect value of the result
 	value := reflect.ValueOf(val)
 
 	// if the value passed in is the zero value of the appropriate type
-	if isZero(value) && value.Kind() != reflect.Bool {
+	if IsZero(value) && value.Kind() != reflect.Bool {
 		return errors.New("Value is required")
 	}
 	return nil
@@ -116,7 +121,7 @@ func ComposeValidators(validators ...Validator) Validator {
 }
 
 // isZero returns true if the passed value is the zero object
-func isZero(v reflect.Value) bool {
+func IsZero(v reflect.Value) bool {
 	switch v.Kind() {
 	case reflect.Slice, reflect.Map:
 		return v.Len() == 0

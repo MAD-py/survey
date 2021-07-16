@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/AlecAivazis/survey/v2/validators"
 )
 
 // the questions to ask
@@ -14,14 +15,14 @@ var simpleQs = []*survey.Question{
 			Message: "Choose a color:",
 			Options: []string{"red", "blue", "green"},
 		},
-		Validate: survey.Required,
+		Validate: validators.Required,
 	},
 	{
 		Name: "name",
 		Prompt: &survey.Input{
 			Message: "What is your name?",
 		},
-		Validate: survey.Required,
+		Validate: validators.Required,
 	},
 }
 

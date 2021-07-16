@@ -8,6 +8,7 @@ import (
 
 	"github.com/AlecAivazis/survey/v2/core"
 	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/AlecAivazis/survey/v2/validators"
 	expect "github.com/Netflix/go-expect"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -263,14 +264,14 @@ func TestAsk(t *testing.T) {
 			},
 		},
 		{
-			"Test Ask with validate survey.Required",
+			"Test Ask with validate validators.Required",
 			[]*Question{
 				{
 					Name: "name",
 					Prompt: &Input{
 						Message: "What is your name?",
 					},
-					Validate: Required,
+					Validate: validators.Required,
 				},
 			},
 			func(c *expect.Console) {

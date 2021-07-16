@@ -8,6 +8,7 @@ import (
 
 	"github.com/AlecAivazis/survey/v2/core"
 	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/AlecAivazis/survey/v2/validators"
 )
 
 // DefaultAskOptions is the default options on ask, using the OS stdio.
@@ -87,11 +88,6 @@ type IconSet struct {
 	SelectFocus    Icon
 }
 
-// Validator is a function passed to a Question after a user has provided a response.
-// If the function returns an error, then the user will be prompted again for another
-// response.
-type Validator func(ans interface{}) error
-
 // Transformer is a function passed to a Question after a user has provided a response.
 // The function can be used to implement a custom logic that will result to return
 // a different representation of the given answer.
@@ -103,7 +99,7 @@ type Transformer func(ans interface{}) (newAns interface{})
 type Question struct {
 	Name      string
 	Prompt    Prompt
-	Validate  Validator
+	Validate  validators.Validator
 	Transform Transformer
 }
 
@@ -137,7 +133,7 @@ type AskOpt func(options *AskOptions) error
 // AskOptions provides additional options on ask.
 type AskOptions struct {
 	Stdio        terminal.Stdio
-	Validators   []Validator
+	Validators   []validators.Validator
 	PromptConfig PromptConfig
 }
 
@@ -174,7 +170,7 @@ func WithKeepFilter(KeepFilter bool) AskOpt {
 }
 
 // WithValidator specifies a validator to use while prompting the user
-func WithValidator(v Validator) AskOpt {
+func WithValidator(v validators.Validator) AskOpt {
 	return func(options *AskOptions) error {
 		// add the provided validator to the list
 		options.Validators = append(options.Validators, v)
@@ -267,7 +263,7 @@ matching name. For example:
 		{
 			Name:     "name",
 			Prompt:   &survey.Input{Message: "What is your name?"},
-			Validate: survey.Required,
+			Validate: validators.Required,
 			Transform: survey.Title,
 		},
 	}
@@ -310,7 +306,7 @@ func Ask(qs []*Question, response interface{}, opts ...AskOpt) error {
 		}
 
 		// build up a list of validators that we have to apply to this question
-		validators := []Validator{}
+		validators := []validators.Validator{}
 
 		// make sure to include the question specific one
 		if q.Validate != nil {

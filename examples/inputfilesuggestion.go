@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/AlecAivazis/survey/v2/validators"
 )
 
 func suggestFiles(toComplete string) []string {
@@ -21,7 +22,7 @@ var q = []*survey.Question{
 			Suggest: suggestFiles,
 			Help:    "Any file; do not need to exist yet",
 		},
-		Validate: survey.Required,
+		Validate: validators.Required,
 	},
 }
 
