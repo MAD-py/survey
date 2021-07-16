@@ -3,9 +3,17 @@ package validators
 import (
 	"math/rand"
 	"testing"
-
-	"github.com/AlecAivazis/survey/v2/core"
 )
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+func randString(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Int63()%int64(len(letterBytes))]
+	}
+	return string(b)
+}
 
 func TestRequired_canSucceedOnPrimitiveTypes(t *testing.T) {
 	// a string to test
@@ -75,94 +83,6 @@ func TestRequired_canFailOnLists(t *testing.T) {
 	if notValid := Required(str); notValid == nil {
 		//
 		t.Error("Non null did not return an error when one was expected.")
-	}
-}
-
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-func randString(n int) string {
-	b := make([]byte, n)
-	for i := range b {
-		b[i] = letterBytes[rand.Int63()%int64(len(letterBytes))]
-	}
-	return string(b)
-}
-
-func TestMaxItems(t *testing.T) {
-	// the list to test
-	testList := []core.OptionAnswer{
-		core.OptionAnswer{Value: "a", Index: 0},
-		core.OptionAnswer{Value: "b", Index: 1},
-		core.OptionAnswer{Value: "c", Index: 2},
-		core.OptionAnswer{Value: "d", Index: 3},
-		core.OptionAnswer{Value: "e", Index: 4},
-		core.OptionAnswer{Value: "f", Index: 5},
-	}
-
-	// validate the list
-	if err := MaxItems(4)(testList); err == nil {
-		t.Error("No error returned with input greater than 6 items.")
-	}
-}
-
-func TestMinItems(t *testing.T) {
-	// the list to test
-	testList := []core.OptionAnswer{
-		core.OptionAnswer{Value: "a", Index: 0},
-		core.OptionAnswer{Value: "b", Index: 1},
-		core.OptionAnswer{Value: "c", Index: 2},
-		core.OptionAnswer{Value: "d", Index: 3},
-		core.OptionAnswer{Value: "e", Index: 4},
-		core.OptionAnswer{Value: "f", Index: 5},
-	}
-
-	// validate the list
-	if err := MinItems(10)(testList); err == nil {
-		t.Error("No error returned with input less than 10 items.")
-	}
-}
-
-func TestMaxLength(t *testing.T) {
-	// the string to test
-	testStr := randString(150)
-	// validate the string
-	if err := MaxLength(140)(testStr); err == nil {
-		t.Error("No error returned with input greater than 150 characters.")
-	}
-
-	// emoji test
-	emojiStr := "I😍Golang"
-	// validate visible length with Maxlength
-	if err := MaxLength(10)(emojiStr); err != nil {
-		t.Errorf("Error returned with emoji containing 8 characters long input.")
-	}
-}
-
-func TestMinLength(t *testing.T) {
-	// validate the string
-	if err := MinLength(12)(randString(10)); err == nil {
-		t.Error("No error returned with input less than 12 characters.")
-	}
-
-	// emoji test
-	emojiStr := "I😍Golang"
-	// validate visibly 8 characters long string with MinLength
-	if err := MinLength(10)(emojiStr); err == nil {
-		t.Error("No error returned with emoji containing input less than 10 characters.")
-	}
-}
-
-func TestMinLength_onInt(t *testing.T) {
-	// validate the string
-	if err := MinLength(12)(1); err == nil {
-		t.Error("No error returned when enforcing length on int.")
-	}
-}
-
-func TestMaxLength_onInt(t *testing.T) {
-	// validate the string
-	if err := MaxLength(12)(1); err == nil {
-		t.Error("No error returned when enforcing length on int.")
 	}
 }
 
