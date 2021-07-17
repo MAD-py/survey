@@ -47,3 +47,12 @@ func TestMaxLength_onInt(t *testing.T) {
 		t.Error("No error returned when enforcing length on int.")
 	}
 }
+
+func TestEmail(t *testing.T) {
+	// the string to test
+	testStr := "test.1234gmail.com"
+	// validate the string
+	if err := Email(testStr); err == nil {
+		t.Error("No error returned when input has not email structure")
+	}
+}

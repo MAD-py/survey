@@ -46,7 +46,7 @@ func MinLength(length int) Validator {
 	}
 }
 
-// Email requires that the string has an structure type email
+// Email requires that the string has a structure type email
 func Email(val interface{}) error {
 	if str, ok := val.(string); ok {
 		// if the string does not have an email structure
