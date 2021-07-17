@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/mail"
 	"reflect"
+	"time"
 )
 
 // MaxLength requires that the string is no longer than the specified value
@@ -55,10 +56,34 @@ func Email(val interface{}) error {
 			return fmt.Errorf("the answer has no email structure")
 		}
 	} else {
-		// otherwise we cannot convert the value into a string and cannot enforce length
+		// otherwise we cannot convert the value into a string and cannot enforce email validation
 		return fmt.Errorf("cannot enforce email validation on response of type %v", reflect.TypeOf(val).Name())
 	}
 
 	// the input is fine
 	return nil
+}
+
+// Time requires that the string has a structure type time
+func Time(layout string) Validator {
+	// if the string is not valid for time.parse
+	if _, err := time.Parse(layout, layout); err != nil {
+		panic(err)
+	}
+	// return a validator that checks the structure of the date and/or time
+	return func(val interface{}) error {
+		if str, ok := val.(string); ok {
+			// if the string has not structure of date and/or time
+			if _, err := time.Parse(layout, str); err != nil {
+				// yell loudly
+				return fmt.Errorf("the answer has no the structure passed (%v)", layout)
+			}
+		} else {
+			// otherwise we cannot convert the value into a string and cannot enforce time validation
+			return fmt.Errorf("cannot enforce time validation on response of type %v", reflect.TypeOf(val).Name())
+		}
+
+		// the input is fine
+		return nil
+	}
 }
