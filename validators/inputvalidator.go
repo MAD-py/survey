@@ -2,6 +2,7 @@ package validators
 
 import (
 	"fmt"
+	"net/mail"
 	"reflect"
 )
 
@@ -43,4 +44,21 @@ func MinLength(length int) Validator {
 		// the input is fine
 		return nil
 	}
+}
+
+// Email requires that the string has an structure type email
+func Email(val interface{}) error {
+	if str, ok := val.(string); ok {
+		// if the string does not have an email structure
+		if _, err := mail.ParseAddress(str); err != nil {
+			// yell loudly
+			return fmt.Errorf("the answer has no email structure")
+		}
+	} else {
+		// otherwise we cannot convert the value into a string and cannot enforce length
+		return fmt.Errorf("cannot enforce email validation on response of type %v", reflect.TypeOf(val).Name())
+	}
+
+	// the input is fine
+	return nil
 }
