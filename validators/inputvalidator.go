@@ -68,7 +68,7 @@ func Email(val interface{}) error {
 func Time(layout string) Validator {
 	// if the string is not valid for time.parse
 	if _, err := time.Parse(layout, layout); err != nil {
-		panic(err)
+		panic("The layout is invalid, the valid layouts are the same of time.Parse")
 	}
 	// return a validator that checks the structure of the date and/or time
 	return func(val interface{}) error {
@@ -76,7 +76,7 @@ func Time(layout string) Validator {
 			// if the string has not structure of date and/or time
 			if _, err := time.Parse(layout, str); err != nil {
 				// yell loudly
-				return fmt.Errorf("the answer has no the structure passed (%v)", layout)
+				return fmt.Errorf("the answer has no the expected structure (%v)", layout)
 			}
 		} else {
 			// otherwise we cannot convert the value into a string and cannot enforce time validation
