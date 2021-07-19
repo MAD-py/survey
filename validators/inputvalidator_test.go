@@ -56,3 +56,22 @@ func TestEmail(t *testing.T) {
 		t.Error("No error returned when input has not email structure")
 	}
 }
+
+func TestTime(t *testing.T) {
+	layout := "2006-Jan-02"
+	testTime := "2014-07-04"
+
+	if err := Time(layout)(testTime); err == nil {
+		t.Error("No error returned when input has not expected structure")
+	}
+}
+
+func TestTimeErrorLayout(t *testing.T) {
+	layout := "206-11-11"
+	defer func() {
+		if err := recover(); err == nil {
+			t.Error("No error returned when layout is not valid")
+		}
+	}()
+	Time(layout)
+}
