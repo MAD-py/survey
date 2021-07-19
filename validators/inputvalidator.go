@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/mail"
 	"reflect"
+	"strings"
 	"time"
 )
 
@@ -19,7 +20,10 @@ func MaxLength(length int) Validator {
 			}
 		} else {
 			// otherwise we cannot convert the value into a string and cannot enforce length
-			return fmt.Errorf("cannot enforce length on response of type %v", reflect.TypeOf(val).Name())
+			return fmt.Errorf(
+				"cannot enforce length on response of type %v",
+				reflect.TypeOf(val).Name(),
+			)
 		}
 
 		// the input is fine
@@ -39,7 +43,10 @@ func MinLength(length int) Validator {
 			}
 		} else {
 			// otherwise we cannot convert the value into a string and cannot enforce length
-			return fmt.Errorf("cannot enforce length on response of type %v", reflect.TypeOf(val).Name())
+			return fmt.Errorf(
+				"cannot enforce length on response of type %v",
+				reflect.TypeOf(val).Name(),
+			)
 		}
 
 		// the input is fine
@@ -57,7 +64,10 @@ func Email(val interface{}) error {
 		}
 	} else {
 		// otherwise we cannot convert the value into a string and cannot enforce email validation
-		return fmt.Errorf("cannot enforce email validation on response of type %v", reflect.TypeOf(val).Name())
+		return fmt.Errorf(
+			"cannot enforce email validation on response of type %v",
+			reflect.TypeOf(val).Name(),
+		)
 	}
 
 	// the input is fine
@@ -80,7 +90,35 @@ func Time(layout string) Validator {
 			}
 		} else {
 			// otherwise we cannot convert the value into a string and cannot enforce time validation
-			return fmt.Errorf("cannot enforce time validation on response of type %v", reflect.TypeOf(val).Name())
+			return fmt.Errorf(
+				"cannot enforce time validation on response of type %v",
+				reflect.TypeOf(val).Name(),
+			)
+		}
+
+		// the input is fine
+		return nil
+	}
+}
+
+func InvalidChars(chars string) Validator {
+	return func(val interface{}) error {
+		if str, ok := val.(string); ok {
+			for _, char := range chars {
+				if strings.Contains(str, string(char)) {
+					// yell loudly
+					return fmt.Errorf(
+						"the answer contains invalid characters as %s",
+						chars,
+					)
+				}
+			}
+		} else {
+			// otherwise we cannot convert the value into a string and cannot enforce length
+			return fmt.Errorf(
+				"cannot enforce length on response of type %v",
+				reflect.TypeOf(val).Name(),
+			)
 		}
 
 		// the input is fine
