@@ -53,25 +53,35 @@ func TestEmail(t *testing.T) {
 	testStr := "test.1234gmail.com"
 	// validate the string
 	if err := Email(testStr); err == nil {
-		t.Error("No error returned when input has not email structure")
+		t.Error("No error returned when input has not email structure.")
 	}
 }
 
 func TestTime(t *testing.T) {
+	// the layout and date to test
 	layout := "2006-Jan-02"
 	testTime := "2014-07-04"
 
+	// validate the date
 	if err := Time(layout)(testTime); err == nil {
-		t.Error("No error returned when input has not expected structure")
+		t.Error("No error returned when input has not expected structure.")
 	}
 }
 
 func TestTimeErrorLayout(t *testing.T) {
+	// the layout to test
 	layout := "206-11-11"
 	defer func() {
 		if err := recover(); err == nil {
-			t.Error("No error returned when layout is not valid")
+			t.Error("No error returned when layout is not valid.")
 		}
 	}()
 	Time(layout)
+}
+
+func TestInvalidChars(t *testing.T) {
+	chars := "*@#%.,/\\=-"
+	if err := InvalidChars(chars)("I love gol@ng"); err == nil {
+		t.Error("No error returned when enforcing the invalid chars.")
+	}
 }
