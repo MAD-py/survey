@@ -60,7 +60,7 @@ func Email(val interface{}) error {
 		// if the string does not have an email structure
 		if _, err := mail.ParseAddress(str); err != nil {
 			// yell loudly
-			return fmt.Errorf("the answer has no email structure")
+			return fmt.Errorf("value has no email structure")
 		}
 	} else {
 		// otherwise we cannot convert the value into a string and cannot enforce email validation
@@ -78,7 +78,7 @@ func Email(val interface{}) error {
 func Time(layout string) Validator {
 	// if the string is not valid for time.parse
 	if _, err := time.Parse(layout, layout); err != nil {
-		panic("The layout is invalid, the valid layouts are the same of time.Parse")
+		panic("Layout is invalid, the valid layouts are the same of time.Parse")
 	}
 	// return a validator that checks the structure of the date and/or time
 	return func(val interface{}) error {
@@ -86,7 +86,7 @@ func Time(layout string) Validator {
 			// if the string has not structure of date and/or time
 			if _, err := time.Parse(layout, str); err != nil {
 				// yell loudly
-				return fmt.Errorf("the answer has no the expected structure (%v)", layout)
+				return fmt.Errorf("value has no the expected structure (%v)", layout)
 			}
 		} else {
 			// otherwise we cannot convert the value into a string and cannot enforce time validation
@@ -108,7 +108,7 @@ func InvalidChars(chars string) Validator {
 				if strings.Contains(str, string(char)) {
 					// yell loudly
 					return fmt.Errorf(
-						"the answer contains invalid characters as %s",
+						"value contains invalid characters as %s",
 						chars,
 					)
 				}
