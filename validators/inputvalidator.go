@@ -101,10 +101,13 @@ func Time(layout string) Validator {
 	}
 }
 
+// InvalidChars requires that the string do not contains any of the specified characters
 func InvalidChars(chars string) Validator {
+	// return a validator that checks if the string contains invalid charater
 	return func(val interface{}) error {
 		if str, ok := val.(string); ok {
 			for _, char := range chars {
+				// if the string contains the character
 				if strings.Contains(str, string(char)) {
 					// yell loudly
 					return fmt.Errorf(
@@ -116,7 +119,7 @@ func InvalidChars(chars string) Validator {
 		} else {
 			// otherwise we cannot convert the value into a string and cannot enforce length
 			return fmt.Errorf(
-				"cannot enforce length on response of type %v",
+				"cannot enforce invalid char validation on response of type %v",
 				reflect.TypeOf(val).Name(),
 			)
 		}
